@@ -1,0 +1,13 @@
+Current pipeline:
+-makeNYGrid creates locations to query data
+-2024 quieried at NYGrid locations using getHistoricalForecast
+-filterHistoricalForecast removes grid points X km away from any windturbine locations
+-XXXXX creates the covariance of data from filterHistoricalForecast
+-XXXXX Optimizes information using K wind turbines
+-XXXXX predicts wind energy generation for the next hour
+
+Integrated pipeline
+-Create a main file
+-Query new monthly data at the end of every month and store
+-filterHistoricalForecast is currently a script, turn its actions into functions
+-Create interface
