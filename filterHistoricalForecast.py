@@ -1,9 +1,10 @@
-#This file goes through historical data and removes all data that is not within 6 km of a wind turbine
+#This file goes through historical data and removes all data that is not within X km of a wind turbine
 import pandas as pd
 import numpy as np
 from scipy.spatial import cKDTree
 import os
 import ast
+
 
 def filter_nearby_coordinates(reference_coords, target_coords, max_distance_km):
     """
@@ -45,7 +46,7 @@ df = pd.read_csv("/Users/schristianson/Desktop/NY Wind Energy Model/uswtdb_v7_2_
 df_ny = df[df["t_state"] == "NY"]
 
 # Select only coordinates
-ny_turbine_coords = list(zip(df_ny["ylat"], df["xlong"]))
+ny_turbine_coords = list(zip(df_ny["ylat"], df_ny["xlong"]))
 
 # Get forecast  coordinates
 df = pd.read_csv("/Users/schristianson/Desktop/NY Wind Energy Model/historicalForecasts2024/historicalForecast01.csv")
