@@ -5,6 +5,7 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF
 from scipy.spatial.distance import pdist
 from sklearn.preprocessing import StandardScaler
+import itertools
 
 def retrieveData(dist):
     # returns data frame that includes all measurements with time as index and columns as wind speed 
@@ -19,6 +20,8 @@ def retrieveData(dist):
         
         #get 80m wind speecs
         data = pd.concat([data, df[[col for col in df.columns if '80' in col]]], axis=0)
+
+    return data
 
 def getMagDf(dist=10):
     """
@@ -77,8 +80,8 @@ def getCoordinateGrid(df):
     lat, lon = zip(*[(float(lat), float(lon)) for lat, lon in (coord.split(", ") for coord in coords)])
     lat = sorted(set(lat))
     lon = sorted(set(lon))
-    lat_dict={zip(range(len(lat)),lat)}
-    lon_dict={zip(range(len(lon)),lon)}
+    lat_dict=dict(zip(range(len(lat)),lat))
+    lon_dict=dict(zip(range(len(lon)),lon))
     return lat_dict, lon_dict
 
 def mutual_info_gain(K_sub, sigma2):
@@ -105,10 +108,10 @@ def greedy_select(lat_dict, lon_dict, K_full, k=10, sigma2=10**(-5)):
     selected_indices = []
     selected_coords = []
 
-    remaining_indices = zip(list(lat_dict.keys()), list(lon_dict.keys()))
+    remaining_indices = list(itertools.product(list(lat_dict.keys()), list(lon_dict.keys())))
     
-
     for _ in range(k):
+        print(f'finding {_} out of {k}')
         best_gain = -np.inf
         best_idx = None
         
@@ -125,17 +128,20 @@ def greedy_select(lat_dict, lon_dict, K_full, k=10, sigma2=10**(-5)):
                 best_idx = i
         
         selected_indices.append(best_idx)
-        selected_coords.append(lat_dict[best_idx[0]], lon_dict[best_idx[1]])
+        selected_coords.append((lat_dict[best_idx[0]], lon_dict[best_idx[1]]))
         remaining_indices.remove(best_idx)
 
-    return selected_indices
+    return selected_indices, selected_coords
 
 x_km_from_turbines = 10
 df_mag = getMagDf(x_km_from_turbines)
 
 #square root to stabilize variance
 df_mag_sqrt = np.sqrt(df_mag)
-df_mag_sqrt_vals = df_mag_sqrt.values
-K = makeKernel(df_mag_sqrt_vals)
+K = makeKernel(df_mag_sqrt)
 
+lat_dict, lon_dict = getCoordinateGrid(df_mag_sqrt)
+
+best_indices, best_coords = greedy_select(lat_dict, lon_dict, K)
+print(best_coords)
 
