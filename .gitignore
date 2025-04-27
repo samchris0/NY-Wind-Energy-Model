@@ -1,0 +1,20 @@
+# macOS system files
+.DS_Store
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ignore the unfiltered 2024 historicalForecasts data file
+data/unfiltered_historicalForecast2024.csv
+
+#ignore this folder full of unnecessary files
+data/to be deleted/
+
+# Ignore all files in the filtered_historicalForecasts directory
+# except for the README.txt file
+data/filtered_historicalForecasts/*
+!data/filtered_historicalForecasts/
+!data/filtered_historicalForecasts/README.txt

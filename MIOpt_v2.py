@@ -5,27 +5,34 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF
 from scipy.spatial.distance import pdist
 from sklearn.preprocessing import StandardScaler
-from sklearn.impute import SimpleImputer
 import itertools
+import os
+
+from preprocessing.filterHistoricalForecast_v2 import produce_filtered_dataset
 
 def retrieveData(dist):
-    # returns data frame that includes all measurements with time as index and columns as wind speed 
-    # at given locations
-    data = pd.DataFrame()
-
-    for i in range(1,13):
-        df = pd.read_csv(f'/Users/schristianson/Desktop/NY Wind Energy Model/historicalForecast{dist}km2024/historicalForecast{dist}km{i:02}.csv')
-        df['Date'] = df['Date'].apply(lambda x: x if " " in x else x + " 00:00:00")
-        df['Date'] = pd.to_datetime(df['Date'])
-        df.set_index('Date', inplace=True)
+    # returns data frame that includes all measurements with time as index and columns as wind speed at given locations
+    
+    file_path = f'data/filtered_historicalForecasts/{dist}km_historicalForecast2024.csv'
+    print(f'Looking for file at {file_path}...', end=' ')
+    if os.path.exists(file_path):
+        print(f'FOUND!')
+        df = pd.read_csv(file_path)
+    else:
+        print('File does not exist, creating filtered dataset')
+        df = produce_filtered_dataset(
+            unfiltered_data_path = 'data/unfiltered_historicalForecast2024.csv',
+            turbine_data_path = 'data/uswtdb_v7_2_20241120.csv',
+            coordinate_column_path = 'data/coordinate_columns.csv',
+            output_folder = 'data/filtered_historicalForecasts',
+            max_distance_km = dist
+        )
         
-        #get 80m wind speecs
-        data = pd.concat([data, df[[col for col in df.columns if '80' in col]]], axis=0)
-
-    return data
-
-import pandas as pd
-import numpy as np
+    df['Date'] = df['Date'].apply(lambda x: x if " " in x else x + " 00:00:00")
+    df['Date'] = pd.to_datetime(df['Date'])
+    df.set_index('Date', inplace=True)
+    
+    return df
 
 def fill_missing_hours(df):
     """

@@ -1,0 +1,4 @@
+hey sam feels free to ignore everything in here. Mostly just notebooks I used to test some of my functions while I was refactoring everything;
+
+
+probably should've added it to gitignore but figured you could look at them if you were curious or wanted to test anything yourself 

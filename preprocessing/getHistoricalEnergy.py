@@ -1,8 +1,8 @@
 import requests
 import pandas as pd
 from coordinates import getCoordinates
-from retry_requests import retry
-from getHistoricalWeather import getHistoricalWeather
+#from retry_requests import retry
+
 
 
 def getEnergyData():
@@ -24,8 +24,8 @@ def getEnergyData():
    }
 
     headers =   {
-                "start": "2023-12-31T00:00",
-                "end": "2024-12-31T00:00",
+                "start": "2024-01-01T00-05:00",
+                "end": "2025-01-01T00-05:00",
                 }
 
     count = 0
@@ -64,6 +64,6 @@ def getEnergyData():
     return df
 
 energy_data = getEnergyData()
-energy_data.to_csv('historical_energy_24.csv')
+energy_data.to_csv('historical_energy_24(test).csv')
 
 
