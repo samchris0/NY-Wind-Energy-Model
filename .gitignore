@@ -18,3 +18,8 @@ data/to be deleted/
 data/filtered_historicalForecasts/*
 !data/filtered_historicalForecasts/
 !data/filtered_historicalForecasts/README.txt
+
+
+models/*
+!models/README.text
+!models/

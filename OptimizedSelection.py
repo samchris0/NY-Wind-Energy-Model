@@ -84,20 +84,19 @@ def greedy_select(K_full, sensor_id_to_index, k=10, sigma2=1e-5):
     return selected_ids
 
 
-def get_optimized_sensors(df_mag,k):
+def get_optimized_sensors(df_mag_sqrt,k):
     """
     Optimizes sensor selection using greedy mutual information optimization.
     
     Args:
-        df_mag: DataFrame containing sensor data over time with 1 column per sensor
+        df_mag_sqrt: DataFrame containing square root of sensor data over time with 1 column per sensor
         k: number of sensors to select
 
     Returns:
         selected_ids: list of selected sensor IDs
     """
     
-    df_mag_sqrt = np.sqrt(df_mag)
     K = make_kernel(df_mag_sqrt)
-    sensor_id_to_index = {sensor_id: idx for idx, sensor_id in enumerate(df_mag.columns.astype(int))}
+    sensor_id_to_index = {sensor_id: idx for idx, sensor_id in enumerate(df_mag_sqrt.columns.astype(int))}
     return greedy_select(K_full=K,sensor_id_to_index=sensor_id_to_index,k=k)
     
