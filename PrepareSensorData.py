@@ -29,6 +29,7 @@ def retrieve_data(dist):
             output_folder = 'data/filtered_historicalForecasts',
             max_distance_km = dist
         )
+        df.to_csv(f'data/filtered_historicalForecasts/{dist}km_historicalForecast2024.csv', index=False)
         
     df['Date'] = df['Date'].apply(lambda x: x if " " in x else x + " 00:00:00")
     df['Date'] = pd.to_datetime(df['Date'])
@@ -104,7 +105,7 @@ def get_coordinate_dicts(df):
         lon_dict (dict): Dictionary with sensor IDs as keys and longitude as values
     """
     
-    sensor_ids = df.columns.astype(int)
+    sensor_ids = df.columns
             
     df_sensor_coords = pd.read_csv('data/coordinate_columns.csv')
     

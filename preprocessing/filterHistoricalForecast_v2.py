@@ -67,14 +67,11 @@ def produce_filtered_dataset(unfiltered_data_path,turbine_data_path,coordinate_c
         
     distant_sensor_ids = filter_nearby_sensors(ny_turbine_coords, sensor_dict, max_distance_km)
     
-    print('Filtered Sensors Found')    
-
     columns_to_drop = [f"{prefix}_{id}" for id in distant_sensor_ids for prefix in ("u80", "v80")]
     
-                
-    print('Loading: ', unfiltered_data_path)
+    print('Loading: ', unfiltered_data_path, end=' ')
     df_unfiltered = pd.read_csv(unfiltered_data_path)
-    
+    print('...Done')
     
     no_matches = [col for col in columns_to_drop if col not in df_unfiltered.columns]
     if no_matches:
