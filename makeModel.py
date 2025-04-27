@@ -36,11 +36,9 @@ def df_to_X_y(data_X, data_y, window_size=24):
 def buildModel(X):
     model = Sequential()
     model.add(Input(shape=(X.shape[1], X.shape[2])))  # Input layer for defining input shape
-    model.add(LSTM(1000, return_sequences=True))  # First LSTM layer with return_sequences=True
-    model.add(LSTM(640, return_sequences=True))  # Second LSTM layer with return_sequences=True
-    model.add(LSTM(320))  # Third LSTM layer with fewer units
-    model.add(Dense(320, activation='relu'))  # Dense layer with more units
-    model.add(Dense(2, activation='linear'))  # Output layer for regression task
+    model.add(LSTM(64))  # Reduced units in the first LSTM layer
+    model.add(Dense(32, activation='relu'))  # Dense layer with fewer units
+    model.add(Dense(1, activation='linear'))  # Output layer for regression task
     return model
 
 # Train model with early stopping and model checkpoint
@@ -63,7 +61,7 @@ def trainModel(model, model_name, X, y):
     
     model.compile(
         loss=MeanSquaredError(),
-        optimizer=Adam(learning_rate=0.00001),
+        optimizer=Adam(learning_rate=0.001),
         metrics=[RootMeanSquaredError()]
     )
     
