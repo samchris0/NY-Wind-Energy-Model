@@ -20,7 +20,7 @@ def makeNYGrid(km = 3):
     coords_list: List of centers as lon, lat tuples
     """
 
-    url = "/Users/schristianson/Desktop/NY Wind Energy Model/ne_10m_admin_1_states_provinces/ne_10m_admin_1_states_provinces.shp"
+    url = "data/ny_cartography_data/ne_10m_admin_1_states_provinces/ne_10m_admin_1_states_provinces.shp"
     gdf = gpd.read_file(url)
 
     # Filter for New York
