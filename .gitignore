@@ -23,3 +23,6 @@ data/filtered_historicalForecasts/*
 models/*
 !models/README.text
 !models/
+
+
+plot outputs/

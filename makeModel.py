@@ -102,7 +102,7 @@ def trainModel(model, model_name, X, y):
     plt.plot(test_results['Test Predictions'], label='Predictions')
     plt.plot(test_results['Actuals'], label='Actuals')
     plt.legend()
-    plt.title("Test Predictions vs Actuals")
+    plt.title("Random Forest Regression Result")
     plt.show()
     
     return test_results, mse_score
